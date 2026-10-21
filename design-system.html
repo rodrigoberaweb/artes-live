@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Olinda Campos Design System</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wght@6..144,-10..0,100..1000&family=Montserrat:wght@400;500;600&display=swap">
+<style>
+/* Layout: guia de marca em coluna única, com faixas inteiras alternando cinza-claro e marinho,
+   reproduzindo a sequência cinza → verde → marinho do post. */
+:root {
+  /* Cores de marca (amostradas da logomarca) */
+  --oc-marinho: #272F52;
+  --oc-verde: #9DC75F;
+  --oc-laranja: #EF7B20;
+  --oc-laranja-vivo: #FF7C08;   /* versão usada nos posts digitais */
+  --oc-cinza: #747474;          /* "Marketing Digital" */
+  --oc-nevoa: #F0F0F0;          /* fundo claro dos posts */
+  --oc-branco: #FFFFFF;
+  /* Derivadas */
+  --oc-marinho-90: #3A4268;
+  --oc-marinho-linha: #4B5788;
+  --oc-verde-escuro: #6E9A33;
+  --oc-tinta: #1D2340;
+  --oc-texto-suave: #5D6280;
+  --oc-borda: #DCDDE4;
+
+  /* Tipografia */
+  --f-display: "Google Sans Flex", "Helvetica Neue", Arial, sans-serif;
+  --f-texto: "Google Sans Flex", "Helvetica Neue", Arial, sans-serif;
+  /* Pesos (fonte variável 100–1000) */
+  --w-light: 300; --w-regular: 400; --w-medium: 500; --w-bold: 700; --w-extrabold: 800;
+  /* A Google Sans Flex não tem itálico: a inclinação vem do eixo slnt (até -10°) */
+  --italico: oblique 10deg;
+  --f-rotulo: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+
+  /* Espaçamento (base 8) */
+  --s-1: 4px; --s-2: 8px; --s-3: 16px; --s-4: 24px; --s-5: 32px; --s-6: 48px; --s-7: 64px; --s-8: 96px;
+  /* Raios */
+  --r-sm: 8px; --r-md: 16px; --r-pill: 999px;
+
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--oc-nevoa);
+  color: var(--oc-tinta);
+  font-family: var(--f-texto);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  font-optical-sizing: auto;
+}
+em, i { font-style: var(--italico); }
+img { max-width: 100%; display: block; }
+h1, h2, h3, h4 { font-family: var(--f-display); line-height: 1.1; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--oc-laranja); outline-offset: 3px; }
+
+.faixa { padding-block: var(--s-8); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.faixa--branca { background: var(--oc-branco); }
+.faixa--marinho { background: var(--oc-marinho); color: var(--oc-branco); }
+.miolo { max-width: 1120px; margin: 0 auto; display: grid; gap: var(--s-6); }
+
+.rotulo {
+  font-family: var(--f-rotulo); font-weight: 600; font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--oc-laranja);
+}
+.secao-topo { display: grid; gap: var(--s-3); max-width: 680px; }
+.secao-topo h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; font-style: var(--italico); color: var(--oc-marinho); }
+.faixa--marinho .secao-topo h2 { color: var(--oc-branco); }
+.secao-topo p { color: var(--oc-texto-suave); font-size: 18px; }
+.faixa--marinho .secao-topo p { color: #C9CCDA; }
+h3 { font-size: 20px; font-weight: 700; color: var(--oc-marinho); }
+.faixa--marinho h3 { color: var(--oc-branco); }
+.nota { font-size: 14px; color: var(--oc-texto-suave); }
+.faixa--marinho .nota { color: #B8BCCE; }
+code, .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+
+/* ---------- Navegação ---------- */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--oc-borda);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.nav__in { max-width: 1120px; margin: 0 auto; display: flex; align-items: center; gap: var(--s-4); height: 64px; }
+.nav__in img { height: 34px; width: auto; }
+.nav ul { display: flex; gap: var(--s-4); list-style: none; margin: 0 0 0 auto; padding: 0; overflow-x: auto; }
+.nav a { text-decoration: none; font-family: var(--f-rotulo); font-size: 13px; font-weight: 500; color: var(--oc-marinho); white-space: nowrap; }
+.nav a:hover { color: var(--oc-laranja); }
+@media (max-width: 760px) { .nav ul { display: none; } }
+
+/* ---------- Capa ---------- */
+.capa { position: relative; overflow: hidden; background: var(--oc-verde); }
+.capa__ceu { position: absolute; inset: 0 0 auto 0; height: 140px; color: var(--oc-nevoa); }
+.capa__ceu svg { width: 100%; height: 100%; display: block; }
+.capa__in {
+  position: relative; max-width: 1120px; margin: 0 auto;
+  padding-top: 170px; padding-bottom: var(--s-8);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 1.15fr .85fr; gap: var(--s-6); align-items: center;
+}
+.capa h1 { font-size: clamp(40px, 7vw, 84px); font-weight: 800; font-style: var(--italico); color: var(--oc-branco); letter-spacing: -.01em; }
+.capa p { margin-top: var(--s-4); font-size: 19px; color: var(--oc-marinho); max-width: 46ch; font-weight: 500; }
+.capa__meta { margin-top: var(--s-5); display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.capa__foto {
+  justify-self: center; width: min(380px, 100%); aspect-ratio: 1; border-radius: 50%;
+  border: 14px solid var(--oc-laranja-vivo); overflow: hidden; background: var(--oc-nevoa);
+}
+.capa__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+@media (max-width: 820px) { .capa__in { grid-template-columns: 1fr; padding-top: 140px; } .capa__foto { width: min(280px, 100%); } }
+
+/* ---------- Marca ---------- */
+.grade-marca { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-4); }
+.peca { display: grid; gap: var(--s-3); align-content: start; }
+.peca__palco {
+  border-radius: var(--r-md); min-height: 240px; display: grid; place-items: center; padding: var(--s-5);
+  background: var(--oc-nevoa); border: 1px solid var(--oc-borda);
+}
+.peca__palco img { max-height: 150px; width: auto; }
+.peca__palco--marinho { background: var(--oc-marinho); border-color: var(--oc-marinho); }
+.peca__palco--verde { background: var(--oc-verde); border-color: var(--oc-verde); }
+.peca__palco--laranja { background: var(--oc-laranja-vivo); border-color: var(--oc-laranja-vivo); }
+.peca p { font-size: 14px; color: var(--oc-texto-suave); }
+
+.protecao { position: relative; display: inline-block; padding: 34px; outline: 1.5px dashed var(--oc-laranja); outline-offset: -1px; }
+.protecao::before { content: "x"; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); font-family: var(--f-rotulo); font-size: 12px; color: var(--oc-laranja); }
+.protecao img { max-height: 110px; }
+
+.regras { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-4); }
+.erro { display: grid; gap: var(--s-2); }
+.erro__palco { height: 150px; border-radius: var(--r-sm); background: var(--oc-nevoa); border: 1px solid var(--oc-borda); display: grid; place-items: center; position: relative; overflow: hidden; }
+.erro__palco img { max-height: 70px; width: auto; }
+.erro__palco::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top right, transparent calc(50% - 1.5px), #D33A2C calc(50% - 1.5px), #D33A2C calc(50% + 1.5px), transparent calc(50% + 1.5px)); opacity: .8; }
+.erro p { font-size: 14px; color: var(--oc-tinta); font-weight: 500; }
+
+/* ---------- Cores ---------- */
+.paleta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-4); }
+.cor { border-radius: var(--r-md); overflow: hidden; background: var(--oc-branco); border: 1px solid var(--oc-borda); display: grid; grid-template-rows: 150px auto; }
+.cor__amostra { padding: var(--s-3); display: flex; align-items: flex-end; font-family: var(--f-display); font-weight: 800; font-style: var(--italico); font-size: 22px; }
+.cor__dados { padding: var(--s-3); display: grid; gap: 2px; font-size: 13px; color: var(--oc-texto-suave); font-variant-numeric: tabular-nums; }
+.cor__dados strong { color: var(--oc-tinta); font-size: 15px; }
+.copiar { justify-self: start; margin-top: var(--s-2); font: 600 12px var(--f-rotulo); letter-spacing: .06em; text-transform: uppercase; color: var(--oc-marinho); background: none; border: 1px solid var(--oc-borda); border-radius: var(--r-pill); padding: 6px 12px; cursor: pointer; }
+.copiar:hover { border-color: var(--oc-marinho); }
+
+.proporcao { display: flex; height: 56px; border-radius: var(--r-sm); overflow: hidden; }
+.proporcao > div { display: flex; align-items: center; padding: 0 var(--s-3); font: 600 12px var(--f-rotulo); letter-spacing: .08em; white-space: nowrap; overflow: hidden; }
+
+.contraste { overflow-x: auto; }
+.contraste table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+.contraste th, .contraste td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--oc-borda); }
+.contraste th { font: 600 11px var(--f-rotulo); letter-spacing: .12em; text-transform: uppercase; color: var(--oc-texto-suave); }
+.par { display: inline-block; padding: 6px 12px; border-radius: var(--r-sm); font-weight: 800; font-style: var(--italico); }
+.ok { color: #2E7D32; font-weight: 700; }
+.atencao { color: #B26A00; font-weight: 700; }
+.nao { color: #C62828; font-weight: 700; }
+
+/* ---------- Tipografia ---------- */
+.fontes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--s-4); }
+.fonte { background: var(--oc-marinho-90); border-radius: var(--r-md); padding: var(--s-5); display: grid; gap: var(--s-3); }
+.fonte__aa { font-size: 96px; line-height: 1; color: var(--oc-laranja-vivo); }
+.fonte p { color: #D5D8E5; font-size: 15px; }
+.escala { display: grid; }
+.escala__linha { display: grid; grid-template-columns: 170px 1fr; gap: var(--s-4); align-items: baseline; padding-block: var(--s-4); border-top: 1px solid var(--oc-marinho-linha); }
+.escala__linha:last-child { border-bottom: 1px solid var(--oc-marinho-linha); }
+.escala__meta { font: 500 12px var(--f-rotulo); color: #B8BCCE; letter-spacing: .04em; }
+.escala__meta b { display: block; color: var(--oc-branco); font-size: 13px; margin-bottom: 2px; }
+.escala__ex { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .escala__linha { grid-template-columns: 1fr; gap: var(--s-2); } }
+
+/* ---------- Elementos gráficos ---------- */
+.elementos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s-4); }
+.el__palco { height: 200px; border-radius: var(--r-md); overflow: hidden; position: relative; display: grid; place-items: center; }
+.el__palco svg { width: 100%; height: 100%; display: block; }
+
+/* ---------- Componentes ---------- */
+.comp-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--s-4); }
+.comp { background: var(--oc-branco); border: 1px solid var(--oc-borda); border-radius: var(--r-md); padding: var(--s-5); display: grid; gap: var(--s-4); align-content: start; }
+.comp__vitrine { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; }
+
+.btn { font-family: var(--f-display); font-weight: 800; font-size: 16px; border: 0; border-radius: var(--r-pill); padding: 14px 26px; cursor: pointer; text-transform: uppercase; letter-spacing: .02em; transition: transform .15s ease, background .15s ease; }
+.btn:hover { transform: translateY(-1px); }
+.btn--primario { background: var(--oc-laranja-vivo); color: var(--oc-branco); }
+.btn--primario:hover { background: var(--oc-laranja); }
+.btn--secundario { background: var(--oc-marinho); color: var(--oc-branco); }
+.btn--contorno { background: transparent; color: var(--oc-marinho); box-shadow: inset 0 0 0 2px var(--oc-marinho); }
+
+.selo { display: inline-flex; align-items: center; gap: 8px; border-radius: var(--r-pill); padding: 10px 22px; font-family: var(--f-display); font-weight: 800; font-size: 18px; color: var(--oc-branco); background: var(--oc-laranja-vivo); text-transform: uppercase; }
+.selo span { font-weight: 500; }
+.chip { display: inline-block; font: 600 11px var(--f-rotulo); letter-spacing: .12em; text-transform: uppercase; border-radius: var(--r-pill); padding: 6px 12px; }
+.chip--verde { background: var(--oc-verde); color: var(--oc-marinho); }
+.chip--marinho { background: var(--oc-marinho); color: var(--oc-branco); }
+.chip--claro { background: var(--oc-nevoa); color: var(--oc-marinho); }
+
+.avatar { width: 120px; aspect-ratio: 1; border-radius: 50%; border: 7px solid var(--oc-laranja-vivo); overflow: hidden; flex: none; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.avatar--sm { width: 72px; border-width: 4px; }
+
+.convidada { background: var(--oc-marinho); border-radius: var(--r-md); padding: var(--s-5); text-align: center; color: var(--oc-branco); display: grid; gap: 6px; }
+.convidada em { font-size: 16px; }
+.convidada strong { font-family: var(--f-display); font-size: 38px; font-weight: 800; color: var(--oc-laranja-vivo); line-height: 1.1; }
+.convidada hr { border: 0; border-top: 1px solid var(--oc-marinho-linha); width: 100%; margin: var(--s-3) 0; }
+
+.campo { display: grid; gap: 6px; }
+.campo label { font: 600 12px var(--f-rotulo); letter-spacing: .08em; text-transform: uppercase; color: var(--oc-marinho); }
+.campo input { font: 500 16px var(--f-texto); padding: 14px 18px; border-radius: var(--r-pill); border: 2px solid var(--oc-borda); background: var(--oc-nevoa); color: var(--oc-tinta); }
+.campo input:focus { outline: none; border-color: var(--oc-laranja-vivo); background: var(--oc-branco); }
+
+/* ---------- Fotografia ---------- */
+.fotos { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); }
+.fotos figure { margin: 0; display: grid; gap: var(--s-2); }
+.fotos img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: 50% 15%; border-radius: var(--r-sm); }
+.fotos figcaption { font-size: 13px; color: #C9CCDA; }
+@media (max-width: 760px) { .fotos { grid-template-columns: repeat(2, 1fr); } }
+.listas { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--s-5); }
+.lista { display: grid; gap: var(--s-2); margin: 0; padding: 0; list-style: none; }
+.lista li { padding-left: 28px; position: relative; color: #D5D8E5; }
+.lista li::before { position: absolute; left: 0; top: 0; font-weight: 800; }
+.lista--sim li::before { content: "✓"; color: var(--oc-verde); }
+.lista--nao li::before { content: "✕"; color: var(--oc-laranja-vivo); }
+
+/* ---------- Templates de post ---------- */
+.templates { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--s-5); align-items: start; }
+.tpl { display: grid; gap: var(--s-3); }
+.post {
+  container-type: inline-size; position: relative; width: 100%; max-width: 100%; overflow: hidden;
+  border-radius: var(--r-sm); box-shadow: 0 20px 40px -24px rgba(39,47,82,.5);
+  font-family: var(--f-display); color: var(--oc-branco);
+}
+.post--feed { aspect-ratio: 4 / 5; background: var(--oc-verde); }
+.post--story { aspect-ratio: 9 / 16; background: var(--oc-verde); }
+.post__fundo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.post > *:not(.post__fundo) { position: absolute; }
+
+/* Feed 4:5 — medidas a partir da arte de 1080×1350 (1cqw = 10,8px) */
+.f-logo { top: 6.67cqw; left: 40.1cqw; width: 22.6cqw; }
+.f-foto { left: 5cqw; top: 23cqw; width: 46cqw; aspect-ratio: 1; border-radius: 50%; border: 2.2cqw solid var(--oc-laranja-vivo); overflow: hidden; background: var(--oc-nevoa); }
+.f-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.f-titulo { left: 54.5cqw; top: 31.1cqw; right: 4cqw; font-size: 5.8cqw; font-weight: 800; font-style: var(--italico); line-height: 1.08; }
+.f-selo { left: 5.5cqw; top: 63.7cqw; height: 9.6cqw; width: 45cqw; justify-content: center; border-radius: 9cqw; background: var(--oc-laranja-vivo); display: flex; align-items: center; font-size: 3.56cqw; font-weight: 800; white-space: nowrap; }
+.f-selo span { font-weight: 500; margin: 0 .25em; }
+.f-nome { left: 0; right: 0; top: 84.7cqw; text-align: center; font-size: 10.4cqw; font-weight: 800; color: var(--oc-laranja-vivo); line-height: 1.05; }
+.f-cargo { left: 0; right: 0; top: 96cqw; text-align: center; font-size: 2.75cqw; font-style: var(--italico); font-weight: 500; }
+.f-linha { left: 9.6cqw; right: 9.6cqw; top: 104.6cqw; height: 1px; background: var(--oc-marinho-linha); }
+.f-perfil { left: 0; right: 0; top: 107.7cqw; text-align: center; font-size: 3.42cqw; font-style: var(--italico); font-weight: 300; letter-spacing: .02em; }
+
+/* Story 9:16 — medidas a partir da arte de 1080×1920 (1cqw = 10,8px) */
+.s-logo { top: 19.26cqw; left: 33.6cqw; width: 32.6cqw; }
+.s-titulo { left: 4cqw; right: 4cqw; top: 37.4cqw; text-align: center; font-size: 6.86cqw; font-weight: 800; font-style: var(--italico); line-height: 1.08; letter-spacing: -.02em; color: var(--oc-nevoa); }
+.s-foto { left: 23.15cqw; top: 64.35cqw; width: 53.9cqw; aspect-ratio: 1; border-radius: 50%; border: 2.3cqw solid var(--oc-laranja-vivo); overflow: hidden; background: #E6E6EC; }
+.s-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.s-selo { left: 23.15cqw; top: 107.9cqw; width: 53.9cqw; height: 12.2cqw; border-radius: 6.1cqw; background: var(--oc-laranja-vivo); display: flex; align-items: center; justify-content: center; font-size: 4.35cqw; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
+.s-selo span { font-weight: 500; margin: 0 .25em; }
+.s-nome { left: 0; right: 0; top: 126.6cqw; text-align: center; font-size: 11.4cqw; font-weight: 800; line-height: 1.05; color: var(--oc-laranja-vivo); letter-spacing: -.01em; }
+.s-cargo { left: 0; right: 0; top: 139.6cqw; text-align: center; font-size: 4.03cqw; font-style: var(--italico); font-weight: 500; }
+.s-linha { left: 5.4cqw; right: 6.5cqw; top: 150.1cqw; height: 1px; background: var(--oc-marinho-linha); }
+.s-perfil { left: 0; right: 0; top: 154.4cqw; text-align: center; font-size: 3.8cqw; font-style: var(--italico); font-weight: 300; letter-spacing: .03em; }
+
+/* Foto dividida (live com convidada): Olinda à esquerda, convidada à direita, corte diagonal */
+.foto-dupla { position: relative; }
+.foto-dupla img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.foto-dupla .foto-dupla__olinda { object-position: 96% 22%; }
+.foto-dupla .foto-dupla__convidada { clip-path: polygon(59.5% 0, 100% 0, 100% 100%, 37.6% 100%); }
+
+/* Feed 4:5 com convidada */
+.fc-titulo { left: 55cqw; top: 33.6cqw; white-space: nowrap; font-size: 4.4cqw; font-weight: 800; font-style: var(--italico); line-height: 1.2; letter-spacing: -.01em; }
+.fc-nome { font-size: 9.15cqw; top: 84.9cqw; white-space: nowrap; }
+.fc-selo { font-size: 3.23cqw; }
+.fc-cargo { font-size: 2.69cqw; top: 96.4cqw; }
+.fc-perfil { font-size: 3.35cqw; }
+.fc-conv { left: 0; right: 0; top: 79.4cqw; text-align: center; font-size: 2.9cqw; font-style: var(--italico); font-weight: 400; }
+
+/* Story 9:16 com convidada */
+.sc-titulo { left: 3cqw; right: 3cqw; top: 38.2cqw; text-align: center; font-size: 5.96cqw; font-weight: 800; font-style: var(--italico); line-height: 1.2; letter-spacing: -.02em; color: var(--oc-nevoa); }
+.sc-foto { left: 24cqw; top: 62.04cqw; width: 51.67cqw; aspect-ratio: 1; border-radius: 50%; border: 2.5cqw solid var(--oc-laranja-vivo); overflow: hidden; background: #E6E6EC; }
+.sc-selo { left: 24.7cqw; top: 107.2cqw; width: 49.9cqw; height: 10.75cqw; border-radius: 5.4cqw; background: var(--oc-laranja-vivo); display: flex; align-items: center; justify-content: center; font-size: 3.79cqw; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
+.sc-selo span { font-weight: 500; margin: 0 .25em; }
+.sc-conv { left: 0; right: 0; top: 122.9cqw; text-align: center; font-size: 3.25cqw; font-style: var(--italico); font-weight: 400; }
+.sc-nome { left: 0; right: 0; top: 129.8cqw; text-align: center; font-size: 9.6cqw; font-weight: 800; line-height: 1.05; color: var(--oc-laranja-vivo); letter-spacing: -.01em; white-space: nowrap; }
+.sc-cargo { left: 0; right: 0; top: 141.5cqw; text-align: center; font-size: 3.03cqw; font-style: var(--italico); font-weight: 500; }
+.sc-perfil { left: 0; right: 0; top: 152.3cqw; text-align: center; font-size: 3.8cqw; font-style: var(--italico); font-weight: 300; letter-spacing: .03em; }
+
+/* ---------- Tom de voz ---------- */
+.voz { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--s-4); }
+.voz__item { border-top: 4px solid var(--oc-verde); padding-top: var(--s-3); display: grid; gap: var(--s-2); }
+.voz__item:nth-child(2) { border-color: var(--oc-laranja-vivo); }
+.voz__item:nth-child(3) { border-color: var(--oc-marinho); }
+.voz__item p { color: var(--oc-texto-suave); }
+.exemplo { background: var(--oc-nevoa); border-radius: var(--r-sm); padding: var(--s-3); font-size: 15px; }
+.exemplo b { font: 600 11px var(--f-rotulo); letter-spacing: .12em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+.tokens { background: var(--oc-tinta); color: #E3E5EE; border-radius: var(--r-md); padding: var(--s-4); overflow-x: auto; font-size: 13px; line-height: 1.7; }
+.tokens pre { margin: 0; }
+
+.rodape { background: var(--oc-tinta); color: #B8BCCE; padding-block: var(--s-5); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.rodape__in { max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: space-between; align-items: center; font-size: 14px; }
+.rodape img { height: 40px; width: auto; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Seções">
+  <div class="nav__in">
+    <img src="arquivos/marca%20vertical.png" alt="Olinda Campos Marketing Digital">
+    <ul>
+      <li><a href="#marca">Marca</a></li>
+      <li><a href="#cores">Cores</a></li>
+      <li><a href="#tipografia">Tipografia</a></li>
+      <li><a href="#elementos">Elementos</a></li>
+      <li><a href="#componentes">Componentes</a></li>
+      <li><a href="#fotografia">Fotografia</a></li>
+      <li><a href="#templates">Templates</a></li>
+      <li><a href="#voz">Tom de voz</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- CAPA -->
+<header class="capa">
+  <div class="capa__ceu" aria-hidden="true">
+    <svg viewBox="0 0 1440 140" preserveAspectRatio="none"><path d="M0 0H1440V40Q720 230 0 50Z" fill="currentColor"/></svg>
+  </div>
+  <div class="capa__in">
+    <div>
+      <span class="rotulo" style="color:var(--oc-marinho)">Guia de identidade · v1.0 · out/2026</span>
+      <h1>Design System Olinda Campos</h1>
+      <p>Marca, cores, tipografia, componentes e modelos de post para manter cada peça da Olinda Campos Marketing Digital reconhecível à primeira vista.</p>
+      <div class="capa__meta">
+        <span class="chip chip--marinho">Instagram</span>
+        <span class="chip chip--marinho">Lives</span>
+        <span class="chip chip--marinho">Site</span>
+        <span class="chip chip--marinho">Apresentações</span>
+      </div>
+    </div>
+    <div class="capa__foto"><img src="arquivos/foto%2003.png" alt="Olinda Campos sorrindo, segurando uma xícara de café"></div>
+  </div>
+</header>
+
+<!-- MARCA -->
+<section class="faixa faixa--branca" id="marca">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">01 · Marca</span>
+      <h2>Logomarca</h2>
+      <p>O "O" de CAMPOS é o coração da marca: um olho atento (marinho e verde) sobre um balão de fala laranja. Ver e conversar, que é o que o marketing digital faz.</p>
+    </div>
+
+    <div class="grade-marca">
+      <div class="peca">
+        <div class="peca__palco"><img src="arquivos/marca%20vertical.png" alt="Assinatura horizontal"></div>
+        <h3>Assinatura horizontal</h3>
+        <p>Versão principal. Use em cabeçalhos, topo de posts, site e assinaturas de e-mail.</p>
+      </div>
+      <div class="peca">
+        <div class="peca__palco"><img src="arquivos/marca%20horizontal.png" alt="Assinatura vertical"></div>
+        <h3>Assinatura vertical</h3>
+        <p>Para espaços mais altos que largos: stories, capas, crachás e materiais impressos.</p>
+      </div>
+      <div class="peca">
+        <div class="peca__palco"><img src="arquivos/simbolo.png" alt="Símbolo" style="max-height:120px"></div>
+        <h3>Símbolo</h3>
+        <p>Foto de perfil, favicon, marca d'água e aplicações pequenas, onde o nome já está presente.</p>
+      </div>
+    </div>
+
+    <div class="secao-topo">
+      <h3>Versões monocromáticas</h3>
+      <p class="nota">Quando a marca é aplicada em uma só cor, branca ou preta, a bola verde fica vazada: o fundo aparece por dentro do "O". Os arquivos estão em <code>arquivos/monocromaticas/</code>.</p>
+    </div>
+    <div class="grade-marca">
+      <div class="peca">
+        <div class="peca__palco peca__palco--marinho"><img src="arquivos/monocromaticas/marca%20lado%20a%20lado%20branca.png" alt="Marca branca com bola vazada sobre marinho"></div>
+        <h3>Branca sobre marinho</h3>
+        <p>Para fundo marinho ou fotos escuras.</p>
+      </div>
+      <div class="peca">
+        <div class="peca__palco peca__palco--verde"><img src="arquivos/monocromaticas/marca%20empilhada%20branca.png" alt="Marca branca empilhada com bola vazada sobre verde"></div>
+        <h3>Branca sobre verde</h3>
+        <p>Permitida em títulos grandes. Em tamanhos pequenos prefira a versão colorida sobre cinza-névoa.</p>
+      </div>
+      <div class="peca">
+        <div class="peca__palco" style="background:var(--oc-branco)"><img src="arquivos/monocromaticas/marca%20lado%20a%20lado%20preta.png" alt="Marca preta com bola vazada sobre branco"></div>
+        <h3>Preta</h3>
+        <p>Para impressão em uma cor, carimbos, documentos e fundos claros onde a versão colorida não pode ser usada.</p>
+      </div>
+    </div>
+    <div class="grade-marca">
+      <div class="peca">
+        <div class="peca__palco" style="background:var(--oc-cinza)"><img src="arquivos/monocromaticas/simbolo%20branco.png" alt="Símbolo branco com bola vazada" style="max-height:120px"></div>
+        <h3>Símbolo branco</h3>
+        <p>Marca d'água em fotos e vídeos, e foto de perfil sobre fundo colorido.</p>
+      </div>
+      <div class="peca">
+        <div class="peca__palco"><img src="arquivos/monocromaticas/simbolo%20preto.png" alt="Símbolo preto com bola vazada" style="max-height:120px"></div>
+        <h3>Símbolo preto</h3>
+        <p>Aplicações em uma cor sobre fundos claros.</p>
+      </div>
+      <div class="peca">
+        <div class="peca__palco"><span class="protecao"><img src="arquivos/simbolo.png" alt="Área de proteção do símbolo"></span></div>
+        <h3>Área de proteção</h3>
+        <p>Margem livre mínima igual à altura do círculo verde (x) em todos os lados. Tamanho mínimo: 120 px de largura na assinatura horizontal, 32 px no símbolo.</p>
+      </div>
+    </div>
+
+    <div class="secao-topo"><h3>Não faça</h3></div>
+    <div class="regras">
+      <div class="erro"><div class="erro__palco"><img src="arquivos/marca%20vertical.png" alt="" style="transform:scaleX(1.5)"></div><p>Distorcer ou esticar</p></div>
+      <div class="erro"><div class="erro__palco"><img src="arquivos/marca%20vertical.png" alt="" style="filter:hue-rotate(140deg)"></div><p>Trocar as cores</p></div>
+      <div class="erro"><div class="erro__palco"><img src="arquivos/marca%20vertical.png" alt="" style="transform:rotate(-12deg)"></div><p>Rotacionar</p></div>
+      <div class="erro"><div class="erro__palco" style="background:var(--oc-laranja-vivo)"><img src="arquivos/marca%20vertical.png" alt=""></div><p>Aplicar a versão colorida sobre laranja</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CORES -->
+<section class="faixa" id="cores">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">02 · Cores</span>
+      <h2>Paleta</h2>
+      <p>Três cores vêm direto da logomarca. O marinho dá a base séria, o verde traz frescor e o laranja chama para a ação.</p>
+    </div>
+
+    <div class="paleta">
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-marinho);color:#fff">Marinho</div>
+        <div class="cor__dados"><strong>#272F52</strong><span>RGB 39 · 47 · 82</span><span>CMYK 100 · 90 · 40 · 35</span><span>Textos, fundos de base</span><button class="copiar" data-hex="#272F52">Copiar HEX</button></div>
+      </div>
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-verde);color:var(--oc-marinho)">Verde</div>
+        <div class="cor__dados"><strong>#9DC75F</strong><span>RGB 157 · 199 · 95</span><span>CMYK 45 · 0 · 80 · 0</span><span>Fundos de destaque, ilustração</span><button class="copiar" data-hex="#9DC75F">Copiar HEX</button></div>
+      </div>
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-laranja);color:#fff">Laranja</div>
+        <div class="cor__dados"><strong>#EF7B20</strong><span>RGB 239 · 123 · 32</span><span>CMYK 0 · 62 · 95 · 0</span><span>Logomarca e impressos</span><button class="copiar" data-hex="#EF7B20">Copiar HEX</button></div>
+      </div>
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-laranja-vivo);color:#fff">Laranja vivo</div>
+        <div class="cor__dados"><strong>#FF7C08</strong><span>RGB 255 · 124 · 8</span><span>Somente telas</span><span>Selos, botões, nomes em posts</span><button class="copiar" data-hex="#FF7C08">Copiar HEX</button></div>
+      </div>
+    </div>
+    <div class="paleta">
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-cinza);color:#fff">Grafite</div>
+        <div class="cor__dados"><strong>#747474</strong><span>RGB 116 · 116 · 116</span><span>"Marketing Digital", legendas</span><button class="copiar" data-hex="#747474">Copiar HEX</button></div>
+      </div>
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-nevoa);color:var(--oc-marinho);border-bottom:1px solid var(--oc-borda)">Névoa</div>
+        <div class="cor__dados"><strong>#F0F0F0</strong><span>RGB 240 · 240 · 240</span><span>Fundo claro, topo dos posts</span><button class="copiar" data-hex="#F0F0F0">Copiar HEX</button></div>
+      </div>
+      <div class="cor">
+        <div class="cor__amostra" style="background:var(--oc-marinho-linha);color:#fff">Marinho linha</div>
+        <div class="cor__dados"><strong>#4B5788</strong><span>RGB 75 · 87 · 136</span><span>Divisores sobre marinho</span><button class="copiar" data-hex="#4B5788">Copiar HEX</button></div>
+      </div>
+      <div class="cor">
+        <div class="cor__amostra" style="background:#fff;color:var(--oc-marinho);border-bottom:1px solid var(--oc-borda)">Branco</div>
+        <div class="cor__dados"><strong>#FFFFFF</strong><span>RGB 255 · 255 · 255</span><span>Títulos sobre verde e marinho</span><button class="copiar" data-hex="#FFFFFF">Copiar HEX</button></div>
+      </div>
+    </div>
+
+    <div class="secao-topo"><h3>Proporção de uso em uma peça</h3><p class="nota">O laranja funciona porque aparece pouco. Ele marca o que a pessoa deve ler primeiro: data, nome, botão.</p></div>
+    <div class="proporcao" role="img" aria-label="Proporção: marinho 40%, verde 30%, névoa 15%, laranja 10%, branco 5%">
+      <div style="flex:40;background:var(--oc-marinho);color:#fff">MARINHO 40%</div>
+      <div style="flex:30;background:var(--oc-verde);color:var(--oc-marinho)">VERDE 30%</div>
+      <div style="flex:15;background:var(--oc-nevoa);color:var(--oc-marinho);box-shadow:inset 0 0 0 1px var(--oc-borda)">NÉVOA 15%</div>
+      <div style="flex:10;background:var(--oc-laranja-vivo);color:#fff">10%</div>
+      <div style="flex:5;background:#fff;box-shadow:inset 0 0 0 1px var(--oc-borda)"></div>
+    </div>
+
+    <div class="secao-topo"><h3>Combinações de texto</h3></div>
+    <div class="contraste">
+      <table>
+        <thead><tr><th>Combinação</th><th>Contraste</th><th>Uso</th></tr></thead>
+        <tbody>
+          <tr><td><span class="par" style="background:var(--oc-marinho);color:#fff">Branco no marinho</span></td><td class="mono">13,0 : 1</td><td><span class="ok">Qualquer tamanho</span></td></tr>
+          <tr><td><span class="par" style="background:var(--oc-nevoa);color:var(--oc-marinho)">Marinho na névoa</span></td><td class="mono">11,4 : 1</td><td><span class="ok">Qualquer tamanho</span></td></tr>
+          <tr><td><span class="par" style="background:var(--oc-marinho);color:var(--oc-laranja-vivo)">Laranja no marinho</span></td><td class="mono">5,1 : 1</td><td><span class="ok">Títulos e nomes</span></td></tr>
+          <tr><td><span class="par" style="background:var(--oc-verde);color:var(--oc-marinho)">Marinho no verde</span></td><td class="mono">6,6 : 1</td><td><span class="ok">Qualquer tamanho</span></td></tr>
+          <tr><td><span class="par" style="background:var(--oc-verde);color:#fff">Branco no verde</span></td><td class="mono">2,0 : 1</td><td><span class="atencao">Só títulos grandes, em peso 800</span></td></tr>
+          <tr><td><span class="par" style="background:var(--oc-laranja-vivo);color:var(--oc-marinho)">Marinho no laranja</span></td><td class="mono">4,3 : 1</td><td><span class="nao">Evitar; prefira branco</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TIPOGRAFIA -->
+<section class="faixa faixa--marinho" id="tipografia">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">03 · Tipografia</span>
+      <h2>Tipografia</h2>
+      <p>Títulos em itálico extra-negrito dão o tom de conversa animada dos posts. Rótulos em caixa-alta espaçada ecoam o "Marketing Digital" da logomarca.</p>
+    </div>
+    <div class="fontes">
+      <div class="fonte">
+        <span class="rotulo">Principal · títulos e textos</span>
+        <div class="fonte__aa" style="font-family:var(--f-display);font-weight:800;font-style:oblique 10deg">Aa</div>
+        <h3>Google Sans Flex</h3>
+        <p>Fonte variável do Google Fonts, com peso de 100 a 1000 e inclinação de até 10°. Pesos usados: Light 300, Regular 400, Medium 500, Bold 700 e ExtraBold 800.</p>
+        <p class="nota">Não existe versão itálica separada: a inclinação vem do eixo "slnt". No Canva e no Figma, use o ajuste de inclinação (slant) em -10.</p>
+      </div>
+      <div class="fonte">
+        <span class="rotulo">Apoio · rótulos</span>
+        <div class="fonte__aa" style="font-family:var(--f-rotulo);font-weight:500;color:#fff">Aa</div>
+        <h3>Montserrat</h3>
+        <p>A mesma linha do "MARKETING DIGITAL" da assinatura. Use só em caixa-alta com espaçamento de 0,12 a 0,16 em, para rótulos, chapéus e chips.</p>
+      </div>
+    </div>
+
+    <div class="escala">
+      <div class="escala__linha"><div class="escala__meta"><b>Display</b>ExtraBold 800 inclinada · 72/76</div><div class="escala__ex" style="font-family:var(--f-display);font-weight:800;font-style:oblique 10deg;font-size:clamp(40px,7vw,72px);line-height:1.05">Terapias Integrativas</div></div>
+      <div class="escala__linha"><div class="escala__meta"><b>Nome em destaque</b>ExtraBold 800 · 56/60 · laranja vivo</div><div class="escala__ex" style="font-family:var(--f-display);font-weight:800;font-size:clamp(34px,5.5vw,56px);line-height:1.05;color:var(--oc-laranja-vivo)">Claudia Nóvoa</div></div>
+      <div class="escala__linha"><div class="escala__meta"><b>Título H2</b>ExtraBold 800 inclinada · 40/44</div><div class="escala__ex" style="font-family:var(--f-display);font-weight:800;font-style:oblique 10deg;font-size:clamp(28px,4vw,40px)">Tenha mais saúde</div></div>
+      <div class="escala__linha"><div class="escala__meta"><b>Título H3</b>Bold 700 · 24/30</div><div class="escala__ex" style="font-family:var(--f-display);font-weight:700;font-size:24px">Como crescer no Instagram em 30 dias</div></div>
+      <div class="escala__linha"><div class="escala__meta"><b>Texto</b>Regular 400 · 16/26</div><div class="escala__ex" style="font-size:16px;color:#D5D8E5;max-width:62ch">Estratégia, conteúdo e anúncios para profissionais de saúde e pequenos negócios que querem ser encontrados por quem precisa deles.</div></div>
+      <div class="escala__linha"><div class="escala__meta"><b>Apoio</b>Light 300 inclinada · 18/26</div><div class="escala__ex" style="font-size:18px;font-style:oblique 10deg;font-weight:300">Live no perfil: @olindacamposmarketing</div></div>
+      <div class="escala__linha"><div class="escala__meta"><b>Rótulo</b>Montserrat 600 · 12 · +0,16em</div><div class="escala__ex"><span class="rotulo">Convidada especial</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ELEMENTOS -->
+<section class="faixa faixa--branca" id="elementos">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">04 · Elementos gráficos</span>
+      <h2>Formas da marca</h2>
+      <p>Os posts são feitos de três camadas: um céu cinza que se curva, um campo verde e uma base marinho em diagonal, costuradas por um fio laranja.</p>
+    </div>
+    <div class="elementos">
+      <div class="peca">
+        <div class="el__palco" style="background:var(--oc-verde)">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H400V30Q200 150 0 36Z" fill="#F0F0F0"/></svg>
+        </div>
+        <h3>Curva do céu</h3><p>Arco suave no topo, sempre côncavo, abrigando a logomarca centralizada.</p>
+      </div>
+      <div class="peca">
+        <div class="el__palco" style="background:var(--oc-verde)">
+          <svg viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80Q160 136 300 108L400 165V200H0Z" fill="#272F52"/><path d="M0 92Q126 134 291 118L400 182" stroke="#FF7C08" stroke-width="2" fill="none"/></svg>
+        </div>
+        <h3>Base em diagonal + fio laranja</h3><p>A borda do marinho desce em curva por trás da foto, sobe até um pico à direita e cai em diagonal. O fio laranja de 2 px acompanha essa borda e passa por trás do selo.</p>
+      </div>
+      <div class="peca">
+        <div class="el__palco" style="background:var(--oc-nevoa)">
+          <div class="avatar" style="width:140px"><img src="arquivos/foto%2001.png" alt="Exemplo de moldura circular"></div>
+        </div>
+        <h3>Moldura circular</h3><p>Toda pessoa aparece num círculo com borda laranja vivo de 2% da largura da arte. O círculo repete o "O" da marca.</p>
+      </div>
+      <div class="peca">
+        <div class="el__palco" style="background:var(--oc-marinho)">
+          <span class="selo">Live dia 15.04 <span>às</span> 19h</span>
+        </div>
+        <h3>Selo pílula</h3><p>Data, hora e chamadas curtas. Laranja vivo, cantos totalmente arredondados, texto branco em caixa-alta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPONENTES -->
+<section class="faixa" id="componentes">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">05 · Componentes</span>
+      <h2>Componentes</h2>
+      <p>Peças prontas para site, landing pages e apresentações. Todas usam os tokens desta página.</p>
+    </div>
+    <div class="comp-grade">
+      <div class="comp">
+        <h3>Botões</h3>
+        <div class="comp__vitrine">
+          <button class="btn btn--primario">Quero participar</button>
+          <button class="btn btn--secundario">Agendar conversa</button>
+          <button class="btn btn--contorno">Ver portfólio</button>
+        </div>
+        <p class="nota">Um único botão laranja por tela. Ações secundárias em marinho ou contorno.</p>
+      </div>
+      <div class="comp">
+        <h3>Chips e selos</h3>
+        <div class="comp__vitrine">
+          <span class="chip chip--verde">Novo</span>
+          <span class="chip chip--marinho">Live</span>
+          <span class="chip chip--claro">Instagram</span>
+          <span class="selo" style="font-size:15px;padding:8px 18px">Ao vivo</span>
+        </div>
+        <p class="nota">Chips classificam conteúdo. O selo laranja é reservado para datas e chamadas.</p>
+      </div>
+      <div class="comp">
+        <h3>Avatares</h3>
+        <div class="comp__vitrine">
+          <div class="avatar"><img src="arquivos/foto%2003.png" alt="Avatar grande"></div>
+          <div class="avatar avatar--sm"><img src="arquivos/foto%2002.png" alt="Avatar pequeno"></div>
+          <div class="avatar avatar--sm"><img src="arquivos/foto%2004.png" alt="Avatar pequeno"></div>
+        </div>
+      </div>
+      <div class="comp">
+        <h3>Cartão de convidada</h3>
+        <div class="convidada">
+          <em>Convidada:</em>
+          <strong>Claudia Nóvoa</strong>
+          <em>Terapeuta Integrativa e Complementar</em>
+          <hr>
+          <em>Live no perfil: @olindacamposmarketing</em>
+        </div>
+      </div>
+      <div class="comp">
+        <h3>Campo de formulário</h3>
+        <div class="campo">
+          <label for="ds-email">Seu e-mail</label>
+          <input id="ds-email" type="email" placeholder="nome@empresa.com.br">
+        </div>
+        <button class="btn btn--primario" style="justify-self:start">Receber conteúdos</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOTOGRAFIA -->
+<section class="faixa faixa--marinho" id="fotografia">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">06 · Fotografia</span>
+      <h2>Fotografia</h2>
+      <p>A Olinda é a marca. Retratos com sorriso aberto, olhar para a câmera e roupa clara, sobre fundo neutro.</p>
+    </div>
+    <div class="fotos">
+      <figure><img src="arquivos/foto%2003.png" alt="Olinda com café, fundo cinza"><figcaption>Fundo cinza: ideal para recorte e posts</figcaption></figure>
+      <figure><img src="arquivos/foto%2001.png" alt="Olinda com café, fundo escuro"><figcaption>Fundo escuro: capas e destaques</figcaption></figure>
+      <figure><img src="arquivos/foto%2002.png" alt="Olinda em pose de conversa"><figcaption>Gesto de fala: chamadas e frases</figcaption></figure>
+      <figure><img src="arquivos/foto%2004.png" alt="Olinda ao telefone"><figcaption>Em ação: atendimento e bastidores</figcaption></figure>
+    </div>
+    <div class="listas">
+      <div class="peca"><h3>Faça</h3>
+        <ul class="lista lista--sim">
+          <li>Enquadre do peito para cima nas molduras circulares</li>
+          <li>Prefira fundo cinza-névoa ou branco para recortar</li>
+          <li>Mantenha cores naturais de pele e luz suave</li>
+          <li>Deixe espaço acima da cabeça dentro do círculo</li>
+        </ul>
+      </div>
+      <div class="peca"><h3>Evite</h3>
+        <ul class="lista lista--nao">
+          <li>Filtros coloridos ou preto e branco</li>
+          <li>Recortar o topo da cabeça no círculo</li>
+          <li>Banco de imagem genérico no lugar de pessoas reais</li>
+          <li>Texto por cima do rosto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPLATES -->
+<section class="faixa" id="templates">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">07 · Templates</span>
+      <h2>Modelos de post</h2>
+      <p>Reconstruídos a partir das artes reais de feed e story. Medidas em proporção à arte final, então o layout se mantém em qualquer tamanho.</p>
+    </div>
+    <div class="templates">
+
+      <!-- FEED 4:5 -->
+      <div class="tpl">
+        <div class="post post--feed" aria-label="Modelo de post de feed para live">
+          <svg class="post__fundo" viewBox="0 0 1080 1350" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0H1080V55Q540 360 0 70Z" fill="#F0F0F0"/>
+            <path d="M0 618Q427 767 805 692L1080 850V1350H0Z" fill="#262E51"/>
+            <path d="M0 650Q341 762 785 718L1080 892" stroke="#FF7C08" stroke-width="2" fill="none"/>
+          </svg>
+          <img class="f-logo" src="arquivos/marca%20vertical.png" alt="">
+          <div class="f-foto"><img src="arquivos/foto%2003.png" alt=""></div>
+          <div class="f-titulo">Tenha mais saúde usando Terapias Integrativas</div>
+          <div class="f-selo">LIVE DIA 15.04<span>ÀS</span>19H</div>
+          <div class="f-nome">Claudia Nóvoa</div>
+          <div class="f-cargo">Terapeuta Integrativa e Complementar</div>
+          <div class="f-linha"></div>
+          <div class="f-perfil">Live no perfil: @olindacamposmarketing</div>
+        </div>
+        <h3>Feed · Live</h3>
+        <p class="nota">1080 × 1350 px (4:5). Foto única, sem "Convidada:". Título até 5 linhas; nome até 14 caracteres por linha.</p>
+      </div>
+
+      <!-- STORY 9:16 -->
+      <div class="tpl">
+        <div class="post post--story" aria-label="Modelo de story para live">
+          <svg class="post__fundo" viewBox="0 0 1080 1920" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0H1080V265Q540 490 0 246Z" fill="#F0F0F0"/>
+            <path d="M0 892Q540 1050 1080 907V1920H0Z" fill="#262E51"/>
+            <path d="M0 931Q525 1086 1050 940L1080 951" stroke="#FF7C08" stroke-width="2" fill="none"/>
+          </svg>
+          <img class="s-logo" src="arquivos/marca%20vertical.png" alt="">
+          <div class="s-titulo">10 passos para ter<br>um perfil no Instagram<br>pronto pra vender!</div>
+          <div class="s-foto"><img src="arquivos/foto%2003.png" alt=""></div>
+          <div class="s-selo">LIVE DIA 08.04<span>ÀS</span>19h</div>
+          <div class="s-nome">Olinda Campos</div>
+          <div class="s-cargo">Mentora de Redes Sociais</div>
+          <div class="s-linha"></div>
+          <div class="s-perfil">Live no perfil: @olindacamposmarketing</div>
+        </div>
+        <h3>Story · Live</h3>
+        <p class="nota">1080 × 1920 px (9:16). Foto única. Deixe 250 px livres no topo e na base para a interface do Instagram.</p>
+      </div>
+
+      <!-- FEED 4:5 COM CONVIDADA -->
+      <div class="tpl">
+        <div class="post post--feed" aria-label="Modelo de post de feed para live com convidada">
+          <svg class="post__fundo" viewBox="0 0 1080 1350" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0H1080V55Q540 360 0 70Z" fill="#F0F0F0"/>
+            <path d="M0 618Q427 767 805 692L1080 850V1350H0Z" fill="#262E51"/>
+            <path d="M0 650Q341 762 785 718L1080 892" stroke="#FF7C08" stroke-width="2" fill="none"/>
+          </svg>
+          <img class="f-logo" src="arquivos/marca%20vertical.png" alt="">
+          <div class="f-foto foto-dupla"><img class="foto-dupla__olinda" src="arquivos/foto%2003.png" alt=""><img class="foto-dupla__convidada" src="arquivos/exemplos/convidada%20adriana.png" alt=""></div>
+          <div class="fc-titulo">Como encantar<br>o cliente através<br>de um aroma<br>único e marcante</div>
+          <div class="f-selo fc-selo">LIVE DIA 25.06<span>ÀS</span>19h</div>
+          <div class="fc-conv">Convidada:</div>
+          <div class="f-nome fc-nome">Adriana Fernandes</div>
+          <div class="f-cargo fc-cargo">Perfumista e Designer de Aromas</div>
+          <div class="f-linha"></div>
+          <div class="f-perfil fc-perfil">Live no perfil: @olindacamposmarketing</div>
+        </div>
+        <h3>Feed · Live com convidada</h3>
+        <p class="nota">1080 × 1350 px (4:5). Foto dividida na diagonal: Olinda à esquerda, convidada à direita. "Convidada:" entra acima do nome.</p>
+      </div>
+
+      <!-- STORY 9:16 COM CONVIDADA -->
+      <div class="tpl">
+        <div class="post post--story" aria-label="Modelo de story para live com convidada">
+          <svg class="post__fundo" viewBox="0 0 1080 1920" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0 0H1080V265Q540 490 0 246Z" fill="#F0F0F0"/>
+            <path d="M0 892Q540 1050 1080 907V1920H0Z" fill="#262E51"/>
+            <path d="M0 931Q525 1086 1050 940L1080 951" stroke="#FF7C08" stroke-width="2" fill="none"/>
+          </svg>
+          <img class="s-logo" src="arquivos/marca%20vertical.png" alt="">
+          <div class="sc-titulo">Como encantar o cliente<br>através de um aroma único<br>e marcante</div>
+          <div class="sc-foto foto-dupla"><img class="foto-dupla__olinda" src="arquivos/foto%2003.png" alt=""><img class="foto-dupla__convidada" src="arquivos/exemplos/convidada%20adriana.png" alt=""></div>
+          <div class="sc-selo">LIVE DIA 25.06<span>ÀS</span>19h</div>
+          <div class="sc-conv">Olinda Campos convida:</div>
+          <div class="sc-nome">Adriana Fernandes</div>
+          <div class="sc-cargo">Perfumista e Designer de Aromas</div>
+          <div class="s-linha"></div>
+          <div class="sc-perfil">Live no perfil: @olindacamposmarketing</div>
+        </div>
+        <h3>Story · Live com convidada</h3>
+        <p class="nota">1080 × 1920 px (9:16). No story, o texto acima do nome é "Olinda Campos convida:".</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TOM DE VOZ -->
+<section class="faixa faixa--branca" id="voz">
+  <div class="miolo">
+    <div class="secao-topo">
+      <span class="rotulo">08 · Tom de voz</span>
+      <h2>Como a marca fala</h2>
+      <p>O balão de fala no símbolo não é enfeite: a marca conversa. Fala de perto, com clareza e com energia.</p>
+    </div>
+    <div class="voz">
+      <div class="voz__item">
+        <h3>Próxima</h3>
+        <p>Fala com "você", usa exemplos do dia a dia de quem atende clientes.</p>
+        <div class="exemplo"><b style="color:var(--oc-verde-escuro)">Assim</b>Seu perfil pode trazer pacientes enquanto você atende.</div>
+      </div>
+      <div class="voz__item">
+        <h3>Animada</h3>
+        <p>Convida para a ação com verbos no imperativo e frases curtas.</p>
+        <div class="exemplo"><b style="color:var(--oc-laranja)">Assim</b>Tenha mais saúde usando Terapias Integrativas.</div>
+      </div>
+      <div class="voz__item">
+        <h3>Clara</h3>
+        <p>Troca jargão por resultado. Se precisar de um termo técnico, explica em seguida.</p>
+        <div class="exemplo"><b style="color:var(--oc-marinho)">Em vez de</b>Otimize seu funil de conversão. <br><b style="color:var(--oc-marinho);margin-top:8px">Diga</b>Transforme seguidores em clientes.</div>
+      </div>
+    </div>
+
+    <div class="secao-topo"><span class="rotulo">Para desenvolvedores</span><h3>Tokens CSS</h3><p class="nota">Cole no início do CSS do site ou da landing page.</p></div>
+    <div class="tokens"><pre><code>:root {
+  --oc-marinho: #272F52;
+  --oc-verde: #9DC75F;
+  --oc-laranja: #EF7B20;
+  --oc-laranja-vivo: #FF7C08;
+  --oc-cinza: #747474;
+  --oc-nevoa: #F0F0F0;
+  --oc-marinho-linha: #4B5788;
+
+  --f-display: "Google Sans Flex", Arial, sans-serif;  /* 800, inclinada */
+  --f-texto: "Google Sans Flex", Arial, sans-serif;    /* 300–500 */
+  --italico: oblique 10deg;                           /* eixo slnt -10 */
+  --f-rotulo: "Montserrat", Arial, sans-serif;                     /* 600, caixa-alta */
+
+  --s-1: 4px; --s-2: 8px; --s-3: 16px; --s-4: 24px;
+  --s-5: 32px; --s-6: 48px; --s-7: 64px; --s-8: 96px;
+  --r-sm: 8px; --r-md: 16px; --r-pill: 999px;
+}</code></pre></div>
+  </div>
+</section>
+
+<footer class="rodape">
+  <div class="rodape__in">
+    <img src="arquivos/monocromaticas/marca%20lado%20a%20lado%20branca.png" alt="Olinda Campos Marketing Digital">
+    <span>Design System v1.0 · @olindacamposmarketing</span>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copiar').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var hex = b.dataset.hex, label = b.textContent;
+    var done = function () { b.textContent = 'Copiado'; setTimeout(function () { b.textContent = label; }, 1400); };
+    if (navigator.clipboard) navigator.clipboard.writeText(hex).then(done, function () { b.textContent = hex; });
+    else b.textContent = hex;
+  });
+});
+</script>
+</body>
+</html>
